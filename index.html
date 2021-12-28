@@ -7,11 +7,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App de Receitas</title>
 
+    <!-- Unicons -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>recipe-app</h1>
+    <div class="mobile-container">
+        <header>
+            <input type="text">
+            <button id="search">Pesquisar</button>
+
+        </header>
+        <div class="favorite-container">
+            <h3>Pratos preferidos</h3>
+            <ul>
+                <li><img src="https://www.themealdb.com/images/media/meals/n7qnkb1630444129.jpg"
+                        alt="Sandwich"><span></span>
+                </li>
+                <li><img src="https://www.themealdb.com/images/media/meals/nv5lf31628771380.jpg"
+                        alt="Fish"><span></span>
+                </li>
+                <li><img src="https://www.themealdb.com/images/media/meals/tnwy8m1628770384.jpg"
+                        alt="Beans"><span></span>
+                </li>
+            </ul>
+        </div>
+        <div class="meals">
+            <span class="random">
+                Descubra
+            </span>
+            <div class="meal">
+                <div class="meal-header">
+                    <img src="https://www.themealdb.com/images/media/meals/wxyvqq1511723401.jpg" alt="">
+                </div>
+                <div class="meal-body">
+                    <h4>Veggie Veggies</h4>
+                    <button><i class="uil uil-heart"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
