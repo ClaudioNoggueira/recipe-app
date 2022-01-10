@@ -1,6 +1,8 @@
 const meals = document.getElementById("meals");
+const favoriteContainer = document.getElementById("favorite-meals");
 
 getRandomMeal();
+fetchFavoriteMeals();
 
 async function getRandomMeal() {
     const response = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
@@ -12,11 +14,17 @@ async function getRandomMeal() {
 }
 
 async function getMealById(id) {
-    const meal = await fetch('www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
+
+    const responseData = await response.json();
+
+    const meal = responseData.meals[0];
+
+    return meal;
 }
 
 async function getMealsBySearch(term) {
-    const meals = await fetch('www.themealdb.com/api/json/v1/1/search.php?s=' + term);
+    const meals = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + term);
 }
 
 function addMeal(mealData, random = false) {
@@ -42,6 +50,9 @@ function addMeal(mealData, random = false) {
             addMealToLocalStorage(mealData.idMeal);
             btn.classList.add('active');
         }
+
+
+        fetchFavoriteMeals();
     });
 
     meals.appendChild(meal);
@@ -54,7 +65,7 @@ function addMealToLocalStorage(mealId) {
 }
 
 function getMealsFromLocalStorage() {
-    const mealIds = JSON.parse(localStorage.getItem('mealsIds'));
+    const mealIds = JSON.parse(localStorage.getItem('mealIds'));
 
     return mealIds === null ? [] : mealIds;
 }
@@ -63,4 +74,38 @@ function removeMealFromLocalStorage(mealId) {
     const mealIds = getMealsFromLocalStorage();
 
     localStorage.setItem('mealIds', JSON.stringify(mealIds.filter((id) => id !== mealId)));
+}
+
+async function fetchFavoriteMeals() {
+    // Clean the container
+    favoriteContainer.innerHTML = '';
+    const mealIds = getMealsFromLocalStorage();
+
+    for (let i = 0; i < mealIds.length; i++) {
+        const mealId = mealIds[i];
+
+        addMealToFavorites(await getMealById(mealId));
+    }
+}
+
+function addMealToFavorites(mealData) {
+    const favoriteMeal = document.createElement('li');
+
+    favoriteMeal.innerHTML =
+        `
+        <li>
+            <img src="${mealData.strMealThumb}" alt="${mealData.strMeal}">
+            <span>${mealData.strMeal}</span>
+        </li>
+        <button class="clear"><i class="fas fa-times-circle"></i></button>
+        `;
+
+    const btn = favoriteMeal.querySelector('.clear');
+    btn.addEventListener('click', () => {
+        removeMealFromLocalStorage(mealData.idMeal);
+
+        fetchFavoriteMeals();
+    });
+
+    favoriteContainer.appendChild(favoriteMeal);
 }
