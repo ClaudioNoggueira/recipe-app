@@ -33,5 +33,34 @@ function addMeal(mealData, random = false) {
             <button class="favorite-btn"><i class="fas fa-heart"></i></button>
         </div>`;
 
+    const btn = meal.querySelector('.meal-body .favorite-btn');
+    btn.addEventListener('click', () => {
+        if (btn.classList.contains('active')) {
+            removeMealFromLocalStorage(mealData.idMeal);
+            btn.classList.remove('active');
+        } else {
+            addMealToLocalStorage(mealData.idMeal);
+            btn.classList.add('active');
+        }
+    });
+
     meals.appendChild(meal);
+}
+
+function addMealToLocalStorage(mealId) {
+    const mealIds = getMealsFromLocalStorage();
+
+    localStorage.setItem('mealIds', JSON.stringify([...mealIds, mealId]));
+}
+
+function getMealsFromLocalStorage() {
+    const mealIds = JSON.parse(localStorage.getItem('mealsIds'));
+
+    return mealIds === null ? [] : mealIds;
+}
+
+function removeMealFromLocalStorage(mealId) {
+    const mealIds = getMealsFromLocalStorage();
+
+    localStorage.setItem('mealIds', JSON.stringify(mealIds.filter((id) => id !== mealId)));
 }
