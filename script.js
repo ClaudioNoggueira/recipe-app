@@ -1,12 +1,14 @@
-const meals = document.getElementById("meals");
+const mealsElement = document.getElementById("meals");
 const favoriteContainer = document.getElementById("favorite-meals");
+
+const searchTerm = document.getElementById('search-term');
+const searchBtn = document.getElementById('search');
 
 getRandomMeal();
 fetchFavoriteMeals();
 
 async function getRandomMeal() {
     const response = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
-
     const responseData = await response.json();
     const randomMeal = responseData.meals[0];
 
@@ -15,16 +17,18 @@ async function getRandomMeal() {
 
 async function getMealById(id) {
     const response = await fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
-
     const responseData = await response.json();
-
     const meal = responseData.meals[0];
 
     return meal;
 }
 
 async function getMealsBySearch(term) {
-    const meals = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + term);
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=' + term);
+    const responseData = await response.json();
+    const meals = responseData.meals;
+
+    return meals;
 }
 
 function addMeal(mealData, random = false) {
@@ -51,11 +55,9 @@ function addMeal(mealData, random = false) {
             btn.classList.add('active');
         }
 
-
         fetchFavoriteMeals();
     });
-
-    meals.appendChild(meal);
+    mealsElement.appendChild(meal);
 }
 
 function addMealToLocalStorage(mealId) {
@@ -83,7 +85,6 @@ async function fetchFavoriteMeals() {
 
     for (let i = 0; i < mealIds.length; i++) {
         const mealId = mealIds[i];
-
         addMealToFavorites(await getMealById(mealId));
     }
 }
@@ -109,3 +110,17 @@ function addMealToFavorites(mealData) {
 
     favoriteContainer.appendChild(favoriteMeal);
 }
+
+searchBtn.addEventListener('click', async () => {
+    //Clean container
+    mealsElement.innerHTML = '';
+
+    const search = searchTerm.value;
+    const meals = await getMealsBySearch(search);
+
+    if (meals) {
+        meals.forEach((meal) => {
+            addMeal(meal);
+        });
+    }
+});
