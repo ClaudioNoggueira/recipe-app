@@ -1,7 +1,5 @@
 # recipe-app
-Recipe application made with HTML, CSS and Javascript
-
-using [TheMealDB API](https://www.themealdb.com/api.php)
+Recipe application made with HTML, CSS and Javascript using [TheMealDB API](https://www.themealdb.com/api.php)
 
 ![Landing Page](https://github.com/ClaudioNoggueira/recipe-app/blob/main/screenshots/landing-page.png)
 ![Searching meals](https://github.com/ClaudioNoggueira/recipe-app/blob/main/screenshots/searching-meals.png)
