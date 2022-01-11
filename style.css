@@ -59,6 +59,7 @@ header button {
 }
 
 .favorite-meals {
+    cursor: pointer;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -147,4 +148,56 @@ header button {
 
 .meal-body .favorite-btn.active {
     color: rebeccapurple;
+}
+
+.popup-container {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.popup-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup {
+    background-color: #FFF;
+    border-radius: 5px;
+    max-height: 100vh;
+    max-width: 600px;
+    overflow: auto;
+    padding: 0 2rem;
+    position: relative;
+    width: 100%;
+}
+
+.popup .close-popup {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 1.5rem;
+    top: 1rem;
+}
+
+.meal-info h1 {
+    text-align: center;
+}
+
+.meal-info img {
+    align-items: center;
+    height: 500px;
+    width: 500px;
+}
+
+.meal-info p {
+    font-size: .8rem;
 }

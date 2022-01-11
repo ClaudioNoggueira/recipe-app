@@ -4,6 +4,10 @@ const favoriteContainer = document.getElementById("favorite-meals");
 const searchTerm = document.getElementById('search-term');
 const searchBtn = document.getElementById('search');
 
+const mealPopup = document.getElementById('meal-popup');
+const mealInfoElement = document.getElementById('meal-info');
+const popupCloseBtn = document.getElementById('close-popup')
+
 getRandomMeal();
 fetchFavoriteMeals();
 
@@ -37,7 +41,7 @@ function addMeal(mealData, random = false) {
 
     meal.innerHTML =
         `<div class="meal-header">
-           ${random ? `<span class="random">Veja essa nova receita</span>` : ''}
+           ${random ? `<span class="random">Look at this recipe</span>` : ''}
             <img src="${mealData.strMealThumb}" alt="${mealData.strMeal}">
         </div>
         <div class="meal-body">
@@ -56,6 +60,10 @@ function addMeal(mealData, random = false) {
         }
 
         fetchFavoriteMeals();
+    });
+
+    meal.addEventListener('click', () => {
+        showMealInfo(mealData);
     });
     mealsElement.appendChild(meal);
 }
@@ -108,7 +116,42 @@ function addMealToFavorites(mealData) {
         fetchFavoriteMeals();
     });
 
+    favoriteMeal.addEventListener('click', () => {
+        showMealInfo(mealData);
+    });
+
     favoriteContainer.appendChild(favoriteMeal);
+}
+
+function showMealInfo(mealData) {
+    mealInfoElement.innerHTML = '';
+    const mealElement = document.createElement('div');
+    mealInfoElement.appendChild(mealElement);
+
+    //get ingredients and measure
+    const ingredients = [];
+    for (let i = 1; i <= 20; i++) {
+        if (mealData["strIngredient" + i]) {
+            ingredients.push(`${mealData["strIngredient" + i]} - ${mealData["strMeasure" + i]}`)
+        } else {
+            break;
+        }
+    }
+
+    mealElement.innerHTML =
+        `
+        <h1>${mealData.strMeal}</h1>
+        <img src="${mealData.strMealThumb}" alt="${mealData.strMeal}">
+        <p>${mealData.strInstructions}</p>
+        <h3>Ingredients:</h3>
+        <ul>
+            ${ingredients.map((ing) => `<li>${ing}</li>`).join("")}
+        </ul>
+    `;
+
+    //show popup
+    mealPopup.classList.remove('hidden')
+
 }
 
 searchBtn.addEventListener('click', async () => {
@@ -123,4 +166,8 @@ searchBtn.addEventListener('click', async () => {
             addMeal(meal);
         });
     }
+});
+
+popupCloseBtn.addEventListener('click', () => {
+    mealPopup.classList.add('hidden');
 });
